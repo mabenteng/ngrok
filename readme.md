@@ -131,4 +131,51 @@ ngrok -config=ngrok.cfg -subdomain ngrok 80
 
 此时，ngrok服务便搭建完成
 ```
- 
+
+
+
+### nginx 配置80端口代替1992
+
+
+```
+upstream ngrok {
+
+	server 127.0.0.1:1992;
+}
+
+server {
+
+	listen 80;
+	server_name ng.deni.xin;
+	location / {
+
+		proxy_pass http://ngrok.ng.deni.xin:1992;
+	}
+
+}
+
+
+
+server {
+
+	listen 80;
+	server_name *.ng.deni.xin;
+	location / {
+#		if ($host ~* (.*)\.ng.deni.xin){
+#			set $nghead $1;#获取当前域名前缀
+#		}		
+		
+#		proxy_pass http://$nghead.ng.deni.xin:1992;
+#		proxy_set_header Test $nghead;
+		proxy_set_header Host $host:1992;
+		proxy_set_header X-Real-IP $remote_addr;
+		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+		proxy_pass http://ngrok;
+	}
+
+
+}
+
+
+
+```
