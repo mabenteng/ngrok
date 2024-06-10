@@ -47,6 +47,10 @@ cp device.key ../assets/server/tls/snakeoil.key
 在ngrok目录中执行
 
 ```
+
+如果go执行报错,执行这个命令用老模式
+
+export GO111MODULE=off
 <!--linux服务端/客户端-->
 GOOS=linux GOARCH=386 make release-server (32位)
 GOOS=linux GOARCH=amd64 make release-server（64位）
